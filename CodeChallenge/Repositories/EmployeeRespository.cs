@@ -29,7 +29,11 @@ namespace CodeChallenge.Repositories
 
         public Employee GetById(string id)
         {
-            return _employeeContext.Employees.SingleOrDefault(e => e.EmployeeId == id);
+            //Seems like this method was broken and not returning the DirectReports list as intended.
+            //Found fix via: https://stackoverflow.com/questions/24120039/how-to-include-nested-child-entity-in-linq
+            return _employeeContext.Employees.Where(e => e.EmployeeId == id)
+                .Include(e => e.DirectReports)
+                .SingleOrDefault();
         }
 
         public Task SaveAsync()
