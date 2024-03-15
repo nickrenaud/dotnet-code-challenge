@@ -31,9 +31,11 @@ namespace CodeChallenge.Repositories
         {
             //Seems like this method was broken and not returning the DirectReports list as intended.
             //Found fix via: https://stackoverflow.com/questions/24120039/how-to-include-nested-child-entity-in-linq
-            return _employeeContext.Employees.Where(e => e.EmployeeId == id)
+            return _employeeContext.Employees
                 .Include(e => e.DirectReports)
-                .SingleOrDefault();
+                .ThenInclude(e => e.DirectReports)
+                .AsNoTracking()
+                .SingleOrDefault(e => e.EmployeeId == id);
         }
 
         public Task SaveAsync()
