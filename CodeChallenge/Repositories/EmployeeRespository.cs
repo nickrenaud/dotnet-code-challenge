@@ -34,7 +34,6 @@ namespace CodeChallenge.Repositories
             return _employeeContext.Employees
                 .Include(e => e.DirectReports)
                 .ThenInclude(e => e.DirectReports)
-                .AsNoTracking()
                 .SingleOrDefault(e => e.EmployeeId == id);
         }
 
